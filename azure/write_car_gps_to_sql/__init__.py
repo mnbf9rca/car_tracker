@@ -23,9 +23,8 @@ def main(event: func.EventHubEvent):
         event_data = loads(event.get_body().decode('utf-8'))
     logger.info(f'Received trigger for {len(event_data)} items')
     logger.debug(f'payload: {dumps(event_data)}')
-    _write_to_database(event_data)
 
-    return
+    return _write_to_database(event_data)
 
 def _write_to_database(event_data: dict) -> None:
     try:
@@ -60,7 +59,8 @@ def _write_to_database(event_data: dict) -> None:
                                     for s in event_data])
     except Exception as e:
         logger.error(f'Error received from DB commit: {e}')
+        return -1
     # shouldnt need to close, but seems to improve throughput
     cnxn.close()
     logger.info(f"Successfully stored {len(event_data)} entries in DB")
-    return
+    return 0
