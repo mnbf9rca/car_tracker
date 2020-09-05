@@ -59,7 +59,7 @@ def _write_to_database(event_data: dict) -> None:
                                     [(s["event"], s["data"],  parser.parse(s["published_at"], s["device_id"]))
                                     for s in event_data])
     except Exception as e:
-        logger.error(e)
+        logger.error(f'Error received from DB commit: {e}')
     # shouldnt need to close, but seems to improve throughput
     cnxn.close()
     logger.info(f"Successfully stored {len(event_data)} entries in DB")
