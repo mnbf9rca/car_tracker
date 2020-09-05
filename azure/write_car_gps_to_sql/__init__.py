@@ -26,7 +26,7 @@ def main(event: func.EventHubEvent):
 
     return _write_to_database(event_data)
 
-def _write_to_database(event_data: dict) -> None:
+def _write_to_database(event_data: dict) -> int:
     try:
         cnxn = pyodbc.connect(environ.get('cloud_sql_conn_string'))
     except Exception as e:
@@ -63,4 +63,4 @@ def _write_to_database(event_data: dict) -> None:
     # shouldnt need to close, but seems to improve throughput
     cnxn.close()
     logger.info(f"Successfully stored {len(event_data)} entries in DB")
-    return 0
+    return None
