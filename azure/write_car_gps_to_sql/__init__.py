@@ -55,7 +55,7 @@ def _write_to_database(event_data: dict) -> int:
             '''
 
             cursor.executemany("{CALL insert_car_measurement (?,?,?,?)}", 
-                                    [(s["event"], s["data"],  parser.parse(s["published_at"], s["device_id"]))
+                                    [(s["event"], s["data"],  parser.parse(s["published_at"]), s["device_id"])
                                     for s in event_data])
     except Exception as e:
         logger.error(f'Error received from DB commit: {e}')
